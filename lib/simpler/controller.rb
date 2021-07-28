@@ -1,5 +1,4 @@
 require_relative 'view'
-
 module Simpler
   class Controller
 
@@ -47,7 +46,9 @@ module Simpler
     end
 
     def render(template)
-      @request.env['simpler.template'] = template
+      method, path = template.first
+      @request.env['simpler.method'] = method || 'html'
+      @request.env['simpler.template'] = path || template
     end
 
   end
