@@ -1,5 +1,4 @@
 require_relative 'view'
-
 module Simpler
   class Controller
 
@@ -39,7 +38,10 @@ module Simpler
     end
 
     def render_body
-      View.new(@request.env).render(binding)
+      view = View.new(@request.env)
+      return @request.env['simpler.template'] unless view.path_exist?
+
+      view.render(binding)
     end
 
     def params
@@ -47,8 +49,17 @@ module Simpler
     end
 
     def render(template)
-      @request.env['simpler.template'] = template
+      method, path = template.first
+      @request.env['simpler.method'] = method
+      @request.env['simpler.template'] = path || template
     end
 
+    def status(code)
+      @response.status = code
+    end
+
+    def headers
+      @response.headers
+    end
   end
 end

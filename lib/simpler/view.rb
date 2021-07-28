@@ -15,6 +15,10 @@ module Simpler
       ERB.new(template).result(binding)
     end
 
+    def path_exist?
+      File.exist?(template_path)
+    end
+
     private
 
     def controller
@@ -29,10 +33,14 @@ module Simpler
       @env['simpler.template']
     end
 
+    def method
+      @env['simpler.method'] || 'html'
+    end
+
     def template_path
       path = template || [controller.name, action].join('/')
-
-      Simpler.root.join(VIEW_BASE_PATH, "#{path}.html.erb")
+      @env['simpler.template_path'] = "#{path}.#{method}.erb"
+      Simpler.root.join(VIEW_BASE_PATH, @env['simpler.template_path'])
     end
 
   end

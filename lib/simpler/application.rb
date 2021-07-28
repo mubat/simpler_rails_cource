@@ -28,10 +28,17 @@ module Simpler
 
     def call(env)
       route = @router.route_for(env)
-      controller = route.controller.new(env)
-      action = route.action
 
-      make_response(controller, action)
+      begin
+        controller = route.controller.new(env)
+        controller.request.params.merge!(route.params)
+        action = route.action
+
+        make_response(controller, action)
+      rescue StandardError => err
+        # or maybe create special controller for static actions? Like 'simple#error'
+        make_error_response(err)
+      end
     end
 
     private
@@ -54,5 +61,13 @@ module Simpler
       controller.make_response(action)
     end
 
+    def make_error_response(err)
+      case err
+      when NoMethodError
+        Rack::Response.new(err.message, 404).finish
+      else
+        Rack::Response.new(err.message, 400).finish
+      end
+    end
   end
 end
