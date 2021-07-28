@@ -50,7 +50,7 @@ module Simpler
 
     def render(template)
       method, path = template.first
-      @request.env['simpler.method'] = method || 'html'
+      @request.env['simpler.method'] = method
       @request.env['simpler.template'] = path || template
     end
 

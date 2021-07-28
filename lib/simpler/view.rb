@@ -34,7 +34,7 @@ module Simpler
     end
 
     def method
-      @env['simpler.method']
+      @env['simpler.method'] || 'html'
     end
 
     def template_path
