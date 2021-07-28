@@ -2,7 +2,7 @@ class TestsController < Simpler::Controller
 
   def index
     @time = Time.now
-    render plain: 'tests/index'
+    render plain: '2tests/index'
   end
 
   def create

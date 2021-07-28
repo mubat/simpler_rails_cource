@@ -38,7 +38,10 @@ module Simpler
     end
 
     def render_body
-      View.new(@request.env).render(binding)
+      view = View.new(@request.env)
+      return @request.env['simpler.template'] unless view.path_exist?
+
+      view.render(binding)
     end
 
     def params

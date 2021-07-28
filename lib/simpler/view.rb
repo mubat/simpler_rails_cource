@@ -15,6 +15,10 @@ module Simpler
       ERB.new(template).result(binding)
     end
 
+    def path_exist?
+      File.exist?(template_path)
+    end
+
     private
 
     def controller
