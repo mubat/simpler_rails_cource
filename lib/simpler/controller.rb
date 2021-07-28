@@ -54,5 +54,9 @@ module Simpler
       @request.env['simpler.template'] = path || template
     end
 
+    def status(code)
+      @response.status = code
+    end
+
   end
 end
